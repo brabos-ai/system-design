@@ -1,0 +1,47 @@
+---
+interface Props {
+  title: string;
+  difficulty: 'fundamento' | 'intermediário' | 'avançado';
+  timeEstimate?: string;
+}
+
+const { title, difficulty, timeEstimate } = Astro.props;
+
+const difficultyConfig = {
+  fundamento: { label: 'Fundamento', color: 'bg-correct-light text-correct dark:bg-correct/20' },
+  'intermediário': { label: 'Intermediário', color: 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400' },
+  'avançado': { label: 'Avançado', color: 'bg-antipattern-light text-antipattern dark:bg-antipattern/20' },
+};
+
+const config = difficultyConfig[difficulty];
+---
+
+<div class="my-8 rounded-xl border border-border bg-bg-secondary overflow-hidden">
+  <!-- Header -->
+  <div class="px-5 py-4 bg-bg border-b border-border flex items-center justify-between flex-wrap gap-3">
+    <div class="flex items-center gap-3">
+      <svg class="w-5 h-5 text-layer-entry shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+      </svg>
+      <h3 class="font-semibold text-text">{title}</h3>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class:list={['text-xs font-medium px-2.5 py-1 rounded-full', config.color]}>
+        {config.label}
+      </span>
+      {timeEstimate && (
+        <span class="text-xs text-text-muted flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          {timeEstimate}
+        </span>
+      )}
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="p-5">
+    <slot />
+  </div>
+</div>

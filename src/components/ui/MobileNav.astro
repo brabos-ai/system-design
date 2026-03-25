@@ -1,0 +1,138 @@
+---
+import { getCollection } from 'astro:content';
+import { getChaptersByBlock } from '@utils/navigation';
+import type { ChapterMeta } from '@utils/navigation';
+
+interface Props {
+  currentSlug: string;
+}
+
+const { currentSlug } = Astro.props;
+
+const allChapters = await getCollection('chapters');
+const chapterMetas: ChapterMeta[] = allChapters
+  .map((c) => ({
+    id: c.id,
+    title: c.data.title,
+    subtitle: c.data.subtitle,
+    chapter: c.data.chapter,
+    block: c.data.block,
+    estimatedTime: c.data.estimatedTime,
+    difficulty: c.data.difficulty,
+  }))
+  .sort((a, b) => a.chapter - b.chapter);
+
+const blocks = getChaptersByBlock(chapterMetas);
+---
+
+<!-- Hamburger button -->
+<button
+  id="mobile-nav-open"
+  type="button"
+  class="xl:hidden fixed top-3 left-3 z-40 p-2 rounded-lg bg-bg-secondary border border-border text-text hover:bg-border transition-colors"
+  aria-label="Open navigation menu"
+>
+  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+</button>
+
+<!-- Full-screen overlay -->
+<div
+  id="mobile-nav-overlay"
+  class="fixed inset-0 z-50 bg-bg hidden flex-col"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation menu"
+>
+  <!-- Header -->
+  <div class="flex items-center justify-between px-4 py-3 border-b border-border">
+    <a href="/" class="text-lg font-bold text-text">SD Playbook</a>
+    <button
+      id="mobile-nav-close"
+      type="button"
+      class="p-2 rounded-lg text-text-muted hover:text-text hover:bg-bg-secondary transition-colors"
+      aria-label="Close navigation menu"
+    >
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Chapter list -->
+  <div class="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+    <a
+      href="/quick-win"
+      class="block px-3 py-2 rounded-lg text-sm font-medium bg-layer-entry-light text-layer-entry dark:bg-layer-entry-dark dark:text-layer-entry-light"
+    >
+      Quick Win
+    </a>
+
+    {blocks.map((block) => (
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2 px-1">
+          {block.name}
+        </h3>
+        <ul class="space-y-1">
+          {block.chapters.map((chapter) => {
+            const isActive = chapter.id === currentSlug;
+            return (
+              <li>
+                <a
+                  href={`/${chapter.id}`}
+                  class:list={[
+                    'block px-3 py-2 rounded-md text-sm transition-colors',
+                    isActive
+                      ? 'bg-layer-entry text-white font-medium'
+                      : 'text-text-muted hover:text-text hover:bg-bg-secondary',
+                  ]}
+                >
+                  <span class="text-xs opacity-60 mr-1">{chapter.chapter}.</span>
+                  {chapter.title}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  function initMobileNav() {
+    const openBtn = document.getElementById('mobile-nav-open');
+    const closeBtn = document.getElementById('mobile-nav-close');
+    const overlay = document.getElementById('mobile-nav-overlay');
+    if (!openBtn || !closeBtn || !overlay) return;
+
+    openBtn.addEventListener('click', () => {
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    });
+
+    const close = () => {
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+      document.body.style.overflow = '';
+      openBtn.focus();
+    };
+
+    closeBtn.addEventListener('click', close);
+
+    overlay.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+
+    // Close on link click
+    overlay.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', close);
+    });
+  }
+
+  initMobileNav();
+  document.addEventListener('astro:after-swap', initMobileNav);
+</script>

@@ -1,0 +1,87 @@
+---
+interface Props {
+  id: string;
+  items: string[];
+}
+
+const { id, items } = Astro.props;
+const storageKey = `sdp-checklist-${id}`;
+---
+
+<div class="my-6 rounded-xl border border-border bg-bg-secondary p-5" data-checklist={id} data-storage-key={storageKey}>
+  <!-- Progress bar -->
+  <div class="flex items-center justify-between mb-4">
+    <span class="text-xs font-medium text-text-muted">
+      <span class="checklist-count">0</span> de {items.length} concluídos
+    </span>
+    <button
+      type="button"
+      class="checklist-reset text-xs text-text-muted hover:text-antipattern transition-colors"
+    >
+      Resetar
+    </button>
+  </div>
+  <div class="w-full h-1.5 bg-border rounded-full mb-4 overflow-hidden">
+    <div class="checklist-progress h-full bg-correct rounded-full transition-[width] duration-300" style="width: 0%"></div>
+  </div>
+
+  <!-- Checklist items -->
+  <ul class="space-y-2">
+    {items.map((item, i) => (
+      <li class="flex items-start gap-3">
+        <input
+          type="checkbox"
+          id={`${id}-item-${i}`}
+          class="checklist-item mt-0.5 w-4 h-4 rounded border-border text-correct accent-correct cursor-pointer shrink-0"
+          data-index={i}
+        />
+        <label for={`${id}-item-${i}`} class="text-sm text-text cursor-pointer leading-relaxed">
+          {item}
+        </label>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<script>
+  function initChecklists() {
+    document.querySelectorAll<HTMLDivElement>('[data-checklist]').forEach((container) => {
+      const key = container.dataset.storageKey!;
+      const checkboxes = container.querySelectorAll<HTMLInputElement>('.checklist-item');
+      const progressBar = container.querySelector<HTMLDivElement>('.checklist-progress')!;
+      const countEl = container.querySelector<HTMLSpanElement>('.checklist-count')!;
+      const resetBtn = container.querySelector<HTMLButtonElement>('.checklist-reset')!;
+      const total = checkboxes.length;
+
+      // Load state
+      const saved = JSON.parse(localStorage.getItem(key) || '[]') as boolean[];
+      checkboxes.forEach((cb, i) => {
+        if (saved[i]) cb.checked = true;
+      });
+
+      const updateUI = () => {
+        const checked = Array.from(checkboxes).filter((cb) => cb.checked).length;
+        countEl.textContent = String(checked);
+        progressBar.style.width = total > 0 ? `${(checked / total) * 100}%` : '0%';
+      };
+
+      const save = () => {
+        const state = Array.from(checkboxes).map((cb) => cb.checked);
+        localStorage.setItem(key, JSON.stringify(state));
+        updateUI();
+      };
+
+      checkboxes.forEach((cb) => cb.addEventListener('change', save));
+
+      resetBtn.addEventListener('click', () => {
+        checkboxes.forEach((cb) => (cb.checked = false));
+        save();
+      });
+
+      updateUI();
+    });
+  }
+
+  initChecklists();
+  document.addEventListener('astro:after-swap', initChecklists);
+</script>

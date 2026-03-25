@@ -1,0 +1,131 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Sidebar from '@components/ui/Sidebar.astro';
+import TableOfContents from '@components/ui/TableOfContents.astro';
+import Breadcrumb from '@components/ui/Breadcrumb.astro';
+import ProgressBar from '@components/ui/ProgressBar.astro';
+import ThemeToggle from '@components/ui/ThemeToggle.astro';
+import Footer from '@components/ui/Footer.astro';
+import MobileNav from '@components/ui/MobileNav.astro';
+import { getCollection } from 'astro:content';
+import { getChaptersByBlock, getPrevNext } from '@utils/navigation';
+import type { ChapterMeta } from '@utils/navigation';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  chapter: number;
+  block: string;
+  estimatedTime: string;
+  difficulty: string;
+  headings: Array<{ depth: number; slug: string; text: string }>;
+}
+
+const { title, subtitle, chapter, block, estimatedTime, difficulty, headings } = Astro.props;
+
+const allChapters = await getCollection('chapters');
+const chapterMetas: ChapterMeta[] = allChapters
+  .map((c) => ({
+    id: c.id,
+    title: c.data.title,
+    subtitle: c.data.subtitle,
+    chapter: c.data.chapter,
+    block: c.data.block,
+    estimatedTime: c.data.estimatedTime,
+    difficulty: c.data.difficulty,
+  }))
+  .sort((a, b) => a.chapter - b.chapter);
+
+const { prev, next } = getPrevNext(chapterMetas, chapter);
+const currentSlug = allChapters.find((c) => c.data.chapter === chapter)?.id ?? '';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: block.charAt(0).toUpperCase() + block.slice(1) },
+  { label: title },
+];
+---
+
+<BaseLayout title={title}>
+  <ProgressBar />
+  <div class="flex min-h-screen">
+    <!-- Sidebar (desktop) -->
+    <aside class="hidden xl:block w-60 shrink-0 border-r border-border bg-bg-secondary overflow-y-auto fixed top-0 left-0 h-screen">
+      <Sidebar currentSlug={currentSlug} />
+    </aside>
+
+    <!-- Mobile nav -->
+    <MobileNav currentSlug={currentSlug} />
+
+    <!-- Main content -->
+    <main class="flex-1 xl:ml-60">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex justify-between items-center mb-4">
+          <Breadcrumb items={breadcrumbItems} />
+          <ThemeToggle />
+        </div>
+
+        <header class="mb-8">
+          <div class="flex items-center gap-3 text-sm text-text-muted mb-2">
+            <span>Cap. {chapter}</span>
+            <span>·</span>
+            <span>{estimatedTime}</span>
+            <span>·</span>
+            <span class="capitalize">{difficulty}</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-bold">{title}</h1>
+          {subtitle && <p class="text-lg text-text-muted mt-2">{subtitle}</p>}
+        </header>
+
+        <div class="flex gap-8">
+          <!-- Content -->
+          <article class="prose flex-1 min-w-0">
+            <slot />
+          </article>
+
+          <!-- TOC (desktop) -->
+          <aside class="hidden xl:block w-52 shrink-0">
+            <div class="sticky top-8">
+              <TableOfContents headings={headings} />
+            </div>
+          </aside>
+        </div>
+
+        <!-- Prev/Next navigation -->
+        <nav class="flex justify-between items-center mt-12 pt-8 border-t border-border">
+          {prev ? (
+            <a href={`/${prev.id}`} class="text-layer-entry hover:underline">
+              &larr; {prev.title}
+            </a>
+          ) : <span />}
+          {next ? (
+            <a href={`/${next.id}`} class="text-layer-entry hover:underline">
+              {next.title} &rarr;
+            </a>
+          ) : <span />}
+        </nav>
+
+        <Footer />
+      </div>
+    </main>
+  </div>
+
+  <script is:inline define:vars={{ chapter }}>
+    // Reading progress persistence
+    // Remove any previously attached handler to avoid accumulation across View Transitions swaps
+    (function () {
+      const key = `sdp-progress-${chapter}`;
+      if (window.__sdpScrollHandler) {
+        window.removeEventListener('scroll', window.__sdpScrollHandler);
+      }
+      const handleScroll = () => {
+        const scrollTop = document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollHeight > 0 ? Math.round((scrollTop / scrollHeight) * 100) : 0;
+        localStorage.setItem(key, String(progress));
+      };
+      window.__sdpScrollHandler = handleScroll;
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    })();
+  </script>
+</BaseLayout>

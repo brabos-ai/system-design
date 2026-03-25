@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/brabos-ai/system-design/discussions
+    about: Use Discussions para perguntas abertas, ideias e conversas com a comunidade
+  - name: Security policy
+    url: https://github.com/brabos-ai/system-design/security/policy
+    about: Para vulnerabilidades e exposicao de segredos, siga a politica de seguranca

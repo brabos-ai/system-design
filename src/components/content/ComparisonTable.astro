@@ -1,0 +1,57 @@
+---
+interface Props {
+  headers: [string, string];
+  rows: Array<[string, string]>;
+}
+
+const { headers, rows } = Astro.props;
+---
+
+<div class="my-6 overflow-x-auto rounded-lg border border-border">
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="bg-bg-secondary">
+        <th class="px-4 py-3 text-left font-semibold text-text border-b border-border">{headers[0]}</th>
+        <th class="px-4 py-3 text-left font-semibold text-text border-b border-border">{headers[1]}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row, i) => (
+        <tr class:list={[i % 2 === 1 && 'bg-bg-secondary/50']}>
+          <td class="px-4 py-3 text-text border-b border-border">{row[0]}</td>
+          <td class="px-4 py-3 text-text border-b border-border">{row[1]}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<!-- Mobile stacked view -->
+<style>
+  @media (max-width: 640px) {
+    table {
+      display: block;
+    }
+    thead {
+      display: none;
+    }
+    tbody, tr, td {
+      display: block;
+      width: 100%;
+    }
+    tr {
+      margin-bottom: 0.75rem;
+      border: 1px solid var(--color-border);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    td {
+      border-bottom: none;
+      padding: 0.5rem 1rem;
+    }
+    td:first-child {
+      font-weight: 600;
+      background: var(--color-bg-secondary);
+    }
+  }
+</style>

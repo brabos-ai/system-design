@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from 'astro:content';
+import ExerciseLayout from '@layouts/ExerciseLayout.astro';
+
+export async function getStaticPaths() {
+  const exercises = await getCollection('exercises');
+  return exercises.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<ExerciseLayout
+  title={entry.data.title}
+  exerciseNumber={entry.data.exerciseNumber}
+  scenario={entry.data.scenario}
+  timeLimit={entry.data.timeLimit}
+  difficulty={entry.data.difficulty}
+>
+  <Content />
+</ExerciseLayout>

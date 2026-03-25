@@ -1,0 +1,64 @@
+---
+interface Props {
+  before: { title?: string; problems: string[] };
+  after: { title?: string; improvements: string[] };
+}
+
+const { before, after } = Astro.props;
+---
+
+<div class="my-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <!-- Before (EVITE) -->
+  <div class="rounded-xl border-2 border-antipattern bg-antipattern-light dark:bg-antipattern/10 p-4">
+    <div class="flex items-center gap-2 mb-3">
+      <svg class="w-5 h-5 text-antipattern shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+      <h4 class="font-bold text-sm text-antipattern uppercase tracking-wider">
+        {before.title ?? 'Evite'}
+      </h4>
+    </div>
+
+    <!-- Slot for diagram content -->
+    <div class="mb-3">
+      <slot name="before" />
+    </div>
+
+    <!-- Problems list -->
+    <ul class="space-y-1.5">
+      {before.problems.map((problem) => (
+        <li class="flex items-start gap-2 text-sm text-text">
+          <span class="text-antipattern mt-0.5 shrink-0">✗</span>
+          {problem}
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- After (PREFIRA) -->
+  <div class="rounded-xl border-2 border-correct bg-correct-light dark:bg-correct/10 p-4">
+    <div class="flex items-center gap-2 mb-3">
+      <svg class="w-5 h-5 text-correct shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+      <h4 class="font-bold text-sm text-correct uppercase tracking-wider">
+        {after.title ?? 'Prefira'}
+      </h4>
+    </div>
+
+    <!-- Slot for diagram content -->
+    <div class="mb-3">
+      <slot name="after" />
+    </div>
+
+    <!-- Improvements list -->
+    <ul class="space-y-1.5">
+      {after.improvements.map((improvement) => (
+        <li class="flex items-start gap-2 text-sm text-text">
+          <span class="text-correct mt-0.5 shrink-0">✓</span>
+          {improvement}
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

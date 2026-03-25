@@ -1,0 +1,50 @@
+---
+import type { LayerId } from '@utils/diagrams';
+
+interface Props {
+  name: string;
+  layer: LayerId;
+  description: string;
+  tech?: string;
+}
+
+const { name, layer, description, tech } = Astro.props;
+
+const borderColors: Record<LayerId, string> = {
+  entry: 'border-t-layer-entry',
+  service: 'border-t-layer-service',
+  data: 'border-t-layer-data',
+  cross: 'border-t-layer-cross',
+};
+
+const badgeColors: Record<LayerId, string> = {
+  entry: 'bg-layer-entry-light text-layer-entry dark:bg-layer-entry-dark dark:text-layer-entry-light',
+  service: 'bg-layer-service-light text-layer-service dark:bg-layer-service-dark dark:text-layer-service-light',
+  data: 'bg-layer-data-light text-layer-data dark:bg-layer-data-dark dark:text-layer-data-light',
+  cross: 'bg-layer-cross-light text-layer-cross dark:bg-layer-cross-dark dark:text-layer-cross-light',
+};
+
+const layerNames: Record<LayerId, string> = {
+  entry: 'Entrada',
+  service: 'Servicos',
+  data: 'Dados',
+  cross: 'Transversal',
+};
+---
+
+<div class:list={['rounded-xl border border-border border-t-4 bg-bg p-4', borderColors[layer]]}>
+  <div class="flex items-start justify-between gap-2 mb-2">
+    <h4 class="font-semibold text-text">{name}</h4>
+    <span class:list={['text-xs font-medium px-2 py-0.5 rounded-full shrink-0', badgeColors[layer]]}>
+      {layerNames[layer]}
+    </span>
+  </div>
+  <p class="text-sm text-text-muted leading-relaxed">{description}</p>
+  {tech && (
+    <div class="mt-3 pt-3 border-t border-border">
+      <span class="text-xs font-mono text-text-muted bg-bg-secondary px-2 py-1 rounded">
+        {tech}
+      </span>
+    </div>
+  )}
+</div>

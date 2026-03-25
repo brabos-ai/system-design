@@ -1,0 +1,136 @@
+---
+import QuickWinLayout from '@layouts/QuickWinLayout.astro';
+---
+
+<QuickWinLayout title="Quick Win — Framework Mental">
+  <header class="text-center mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-layer-entry-light dark:bg-layer-entry-dark/40 text-layer-entry text-xs font-semibold uppercase tracking-wider mb-4">
+      Quick Win
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">
+      Framework Mental em 5 Passos
+    </h1>
+    <p class="mt-3 text-text-muted max-w-md mx-auto">
+      Referência rápida para antes da entrevista. Memorize estes 5 passos.
+    </p>
+  </header>
+
+  <!-- Steps -->
+  <ol class="space-y-6">
+    <!-- Step 1 -->
+    <li class="flex gap-4 sm:gap-5 items-start rounded-xl border border-layer-entry/30 bg-layer-entry-light/50 dark:bg-layer-entry-dark/15 p-4 sm:p-5">
+      <div class="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-layer-entry text-white flex items-center justify-center font-bold text-lg sm:text-xl">
+        1
+      </div>
+      <div class="min-w-0">
+        <h2 class="font-bold text-base sm:text-lg text-layer-entry">Esclarecer</h2>
+        <p class="mt-1 text-sm text-text-muted leading-relaxed">
+          Entenda o problema, faça perguntas, defina escopo. Quem são os usuários? Quais funcionalidades são core vs nice-to-have? Quais são as restrições?
+        </p>
+        <div class="mt-2 flex flex-wrap gap-2 text-xs">
+          <span class="px-2 py-0.5 rounded bg-layer-entry/10 text-layer-entry font-medium">Requisitos funcionais</span>
+          <span class="px-2 py-0.5 rounded bg-layer-entry/10 text-layer-entry font-medium">Requisitos não-funcionais</span>
+          <span class="px-2 py-0.5 rounded bg-layer-entry/10 text-layer-entry font-medium">Escopo</span>
+        </div>
+      </div>
+    </li>
+
+    <!-- Step 2 -->
+    <li class="flex gap-4 sm:gap-5 items-start rounded-xl border border-layer-service/30 bg-layer-service-light/50 dark:bg-layer-service-dark/15 p-4 sm:p-5">
+      <div class="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-layer-service text-white flex items-center justify-center font-bold text-lg sm:text-xl">
+        2
+      </div>
+      <div class="min-w-0">
+        <h2 class="font-bold text-base sm:text-lg text-layer-service">Estimar</h2>
+        <p class="mt-1 text-sm text-text-muted leading-relaxed">
+          Calcule escala: users, QPS, storage, bandwidth. Use números redondos. Mostre ao entrevistador que você pensa em escala antes de desenhar.
+        </p>
+        <div class="mt-2 flex flex-wrap gap-2 text-xs">
+          <span class="px-2 py-0.5 rounded bg-layer-service/10 text-layer-service font-medium">DAU / MAU</span>
+          <span class="px-2 py-0.5 rounded bg-layer-service/10 text-layer-service font-medium">QPS</span>
+          <span class="px-2 py-0.5 rounded bg-layer-service/10 text-layer-service font-medium">Storage</span>
+          <span class="px-2 py-0.5 rounded bg-layer-service/10 text-layer-service font-medium">Bandwidth</span>
+        </div>
+      </div>
+    </li>
+
+    <!-- Step 3 -->
+    <li class="flex gap-4 sm:gap-5 items-start rounded-xl border border-layer-data/30 bg-layer-data-light/50 dark:bg-layer-data-dark/15 p-4 sm:p-5">
+      <div class="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-layer-data text-white flex items-center justify-center font-bold text-lg sm:text-xl">
+        3
+      </div>
+      <div class="min-w-0">
+        <h2 class="font-bold text-base sm:text-lg text-layer-data">Projetar</h2>
+        <p class="mt-1 text-sm text-text-muted leading-relaxed">
+          Desenhe as 4 camadas: Entry, Service, Data, Cross. Comece pelo fluxo principal do usuário e adicione componentes em cada camada.
+        </p>
+        <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+          <span class="px-2 py-1.5 rounded border border-layer-entry/40 bg-layer-entry-light/60 dark:bg-layer-entry-dark/20 text-center font-medium text-layer-entry">Entry</span>
+          <span class="px-2 py-1.5 rounded border border-layer-service/40 bg-layer-service-light/60 dark:bg-layer-service-dark/20 text-center font-medium text-layer-service">Service</span>
+          <span class="px-2 py-1.5 rounded border border-layer-data/40 bg-layer-data-light/60 dark:bg-layer-data-dark/20 text-center font-medium text-layer-data">Data</span>
+          <span class="px-2 py-1.5 rounded border border-layer-cross/40 bg-layer-cross-light/60 dark:bg-layer-cross-dark/20 text-center font-medium text-layer-cross">Cross</span>
+        </div>
+      </div>
+    </li>
+
+    <!-- Step 4 -->
+    <li class="flex gap-4 sm:gap-5 items-start rounded-xl border border-layer-cross/30 bg-layer-cross-light/50 dark:bg-layer-cross-dark/15 p-4 sm:p-5">
+      <div class="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-layer-cross text-white flex items-center justify-center font-bold text-lg sm:text-xl">
+        4
+      </div>
+      <div class="min-w-0">
+        <h2 class="font-bold text-base sm:text-lg text-layer-cross">Detalhar</h2>
+        <p class="mt-1 text-sm text-text-muted leading-relaxed">
+          Aprofunde o componente mais crítico. Escolha o ponto de maior impacto e mostre domínio: schema do banco, algoritmo de ranking, estratégia de cache.
+        </p>
+        <div class="mt-2 flex flex-wrap gap-2 text-xs">
+          <span class="px-2 py-0.5 rounded bg-layer-cross/10 text-layer-cross font-medium">Deep dive</span>
+          <span class="px-2 py-0.5 rounded bg-layer-cross/10 text-layer-cross font-medium">Schema design</span>
+          <span class="px-2 py-0.5 rounded bg-layer-cross/10 text-layer-cross font-medium">Algoritmos</span>
+        </div>
+      </div>
+    </li>
+
+    <!-- Step 5 -->
+    <li class="flex gap-4 sm:gap-5 items-start rounded-xl border border-correct/30 bg-correct-light/50 dark:bg-correct/10 p-4 sm:p-5">
+      <div class="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-correct text-white flex items-center justify-center font-bold text-lg sm:text-xl">
+        5
+      </div>
+      <div class="min-w-0">
+        <h2 class="font-bold text-base sm:text-lg text-correct">Validar</h2>
+        <p class="mt-1 text-sm text-text-muted leading-relaxed">
+          Revise trade-offs, gaps, e alternativas. Volte aos requisitos iniciais e confirme que o design os atende. Mencione o que faria diferente com mais tempo.
+        </p>
+        <div class="mt-2 flex flex-wrap gap-2 text-xs">
+          <span class="px-2 py-0.5 rounded bg-correct/10 text-correct font-medium">Trade-offs</span>
+          <span class="px-2 py-0.5 rounded bg-correct/10 text-correct font-medium">Bottlenecks</span>
+          <span class="px-2 py-0.5 rounded bg-correct/10 text-correct font-medium">Alternativas</span>
+        </div>
+      </div>
+    </li>
+  </ol>
+
+  <!-- Mnemonic -->
+  <div class="mt-10 rounded-xl border border-border bg-bg-secondary p-5 sm:p-6 text-center">
+    <p class="text-xs font-semibold uppercase tracking-wider text-text-muted mb-3">Mnemônico</p>
+    <p class="text-xl sm:text-2xl font-bold tracking-wide">
+      <span class="text-layer-entry">E</span>sclarecer
+      <span class="mx-1 text-text-muted font-normal">&middot;</span>
+      <span class="text-layer-service">E</span>stimar
+      <span class="mx-1 text-text-muted font-normal">&middot;</span>
+      <span class="text-layer-data">P</span>rojetar
+      <span class="mx-1 text-text-muted font-normal">&middot;</span>
+      <span class="text-layer-cross">D</span>etalhar
+      <span class="mx-1 text-text-muted font-normal">&middot;</span>
+      <span class="text-correct">V</span>alidar
+    </p>
+    <p class="mt-2 text-sm text-text-muted font-medium">E - E - P - D - V</p>
+  </div>
+
+  <!-- Tip -->
+  <div class="mt-6 rounded-xl border border-layer-entry/20 bg-layer-entry-light/30 dark:bg-layer-entry-dark/10 p-4 sm:p-5">
+    <p class="text-sm text-text-muted leading-relaxed">
+      <strong class="text-text">Dica:</strong> Distribua os 45 minutos da entrevista assim — Esclarecer (5 min), Estimar (5 min), Projetar (20 min), Detalhar (10 min), Validar (5 min).
+    </p>
+  </div>
+</QuickWinLayout>

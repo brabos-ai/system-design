@@ -1,0 +1,25 @@
+name: Documentation improvement
+description: Sugira melhoria de clareza, estrutura, exemplos ou navegacao
+title: "[Docs]: "
+labels:
+  - documentation
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: O que pode melhorar?
+      description: Descreva o trecho, fluxo ou conceito que esta confuso ou incompleto
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Sugestao
+      description: Como voce melhoraria isso?
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impacto esperado
+      description: Como essa melhoria ajuda quem estuda ou contribui?

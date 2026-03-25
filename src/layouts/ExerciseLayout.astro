@@ -1,0 +1,60 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Sidebar from '@components/ui/Sidebar.astro';
+import ThemeToggle from '@components/ui/ThemeToggle.astro';
+import Footer from '@components/ui/Footer.astro';
+import MobileNav from '@components/ui/MobileNav.astro';
+
+interface Props {
+  title: string;
+  exerciseNumber: number;
+  scenario: string;
+  timeLimit: number;
+  difficulty: string;
+}
+
+const { title, exerciseNumber, scenario, timeLimit, difficulty } = Astro.props;
+const minutes = Math.floor(timeLimit / 60);
+---
+
+<BaseLayout title={title}>
+  <div class="flex min-h-screen">
+    <!-- Sidebar (desktop) -->
+    <aside class="hidden xl:block w-60 shrink-0 border-r border-border bg-bg-secondary overflow-y-auto fixed top-0 left-0 h-screen">
+      <Sidebar currentSlug="" />
+    </aside>
+
+    <!-- Mobile nav -->
+    <MobileNav currentSlug="" />
+
+    <!-- Main content -->
+    <main class="flex-1 xl:ml-60">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex justify-between items-center mb-4">
+          <a href="/18-exercicios-guiados" class="text-layer-entry hover:underline text-sm">
+            &larr; Voltar aos exercícios
+          </a>
+          <ThemeToggle />
+        </div>
+
+        <header class="mb-8">
+          <div class="flex items-center gap-3 text-sm text-text-muted mb-2">
+            <span>Exercício {exerciseNumber}</span>
+            <span>·</span>
+            <span>{minutes} min</span>
+            <span>·</span>
+            <span class="capitalize">{difficulty}</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-bold">{title}</h1>
+          <p class="text-text-muted mt-3">{scenario}</p>
+        </header>
+
+        <article class="prose">
+          <slot />
+        </article>
+
+        <Footer />
+      </div>
+    </main>
+  </div>
+</BaseLayout>

@@ -1,0 +1,24 @@
+---
+interface Props {
+  title?: string;
+  caption?: string;
+}
+
+const { title, caption } = Astro.props;
+---
+
+<figure class="my-6">
+  <div class="rounded-xl border border-border bg-bg-secondary p-4 overflow-x-auto">
+    {title && (
+      <h4 class="text-sm font-semibold text-text mb-3 text-center">{title}</h4>
+    )}
+    <div class="flex justify-center">
+      <slot />
+    </div>
+  </div>
+  {caption && (
+    <figcaption class="mt-2 text-center text-xs text-text-muted italic">
+      {caption}
+    </figcaption>
+  )}
+</figure>

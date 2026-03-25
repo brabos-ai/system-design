@@ -1,0 +1,47 @@
+---
+interface Props {
+  type: 'tip' | 'warning' | 'error' | 'info';
+  title?: string;
+}
+
+const { type, title } = Astro.props;
+
+const config = {
+  tip: {
+    border: 'border-l-correct',
+    bg: 'bg-correct-light dark:bg-correct/10',
+    icon: '💡',
+    defaultTitle: 'Dica',
+  },
+  warning: {
+    border: 'border-l-amber-500',
+    bg: 'bg-amber-50 dark:bg-amber-500/10',
+    icon: '⚠️',
+    defaultTitle: 'Atenção',
+  },
+  error: {
+    border: 'border-l-antipattern',
+    bg: 'bg-antipattern-light dark:bg-antipattern/10',
+    icon: '🚫',
+    defaultTitle: 'Erro comum',
+  },
+  info: {
+    border: 'border-l-layer-entry',
+    bg: 'bg-layer-entry-light dark:bg-layer-entry/10',
+    icon: 'ℹ️',
+    defaultTitle: 'Nota',
+  },
+};
+
+const c = config[type];
+---
+
+<aside class:list={['my-6 rounded-r-lg border-l-4 p-4', c.border, c.bg]} role="note">
+  <div class="flex items-center gap-2 font-semibold text-sm mb-2">
+    <span>{c.icon}</span>
+    <span>{title ?? c.defaultTitle}</span>
+  </div>
+  <div class="text-sm leading-relaxed text-text">
+    <slot />
+  </div>
+</aside>
