@@ -137,3 +137,11 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# ADD - managed by code-addiction
+.codeadd/
+.claude/
+.agents/
+.agent/
+.opencode/
+# END ADD
